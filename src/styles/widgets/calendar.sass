@@ -1,0 +1,182 @@
+
+.datePicker
+  text-align: left
+  background: $white
+  border-radius: 2px
+  z-index: 200
+  position: fixed
+  height: auto
+  max-height: 80vh
+  width: 90vw
+  max-width: 448px
+  transform-origin: top left
+  transition: transform .22s ease-in-out, opacity .22s ease-in-out
+  top: 50%
+  left: 50%
+  opacity: 0
+  transform: scale(0) translate(-50%, -50%)
+  user-select: none
+
+  &.datePicker--opened
+    opacity: 1
+    transform: scale(1) translate(-50%, -50%)
+  
+  .datePicker--titles
+    border-top-left-radius: 2px
+    border-top-right-radius: 2px
+    padding: 24px
+    height: 100px
+    background: $primary
+
+    h2, h3
+      cursor: pointer
+      color: #fff
+      line-height: 1
+      padding: 0
+      margin: 0
+      font-size: 32px
+
+    h3
+      color: rgba(255,255,255,.57)
+      font-size: 18px
+      padding-bottom: 2px
+
+  nav
+    padding: 20px
+    height: 56px
+
+    h4
+      width: calc(100% - 60px)
+      text-align: center
+      display: inline-block
+      padding: 0
+      font-size: 14px
+      line-height: 24px
+      margin: 0
+      position: relative
+      top: -9px
+      color: $black
+
+    i
+      cursor: pointer
+      color: $black
+      font-size: 26px
+      user-select: none
+      border-radius: 50%
+      
+      &:hover
+        background: $offwhite
+  
+  .datePicker--scroll
+    overflow-y: auto
+    max-height: calc(80vh - 56px - 100px)
+
+  .datePicker--calendar
+    padding: 0 20px
+
+    .datePicker--dayNames
+      width: 100%
+      display: grid
+      text-align: center
+      
+      // there's probably a better way to do this, but wanted to try out CSS grid
+      grid-template-columns: calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7)
+
+      span
+        color: $primary
+        font-size: 14px
+        line-height: 42px
+        display: inline-grid
+
+    .datePicker--days
+      width: 100%
+      display: grid
+      text-align: center
+      grid-template-columns: calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7)
+
+      span
+        color: $black
+        line-height: 42px
+        font-size: 14px
+        display: inline-grid
+        transition: color .22s
+        height: 32px
+        position: relative
+        cursor: pointer
+        user-select: none
+        border-radius: 50%
+
+        &::before
+          content: ''
+          position: absolute
+          z-index: -1
+          height: 42px
+          width: 42px
+          left: calc(50% - 21px)
+          background: $primary
+          border-radius: 50%
+          transition: transform .22s, opacity .22s
+          transform: scale(0)
+          opacity: 0
+        
+        &[disabled=true]
+          cursor: unset
+
+        &.datePicker--today
+          font-weight: 700
+
+        &.datePicker--selected
+          color: rgba(255,255,255,.87)
+
+          &:before
+            transform: scale(1)
+            opacity: 1
+
+  .datePicker--selectYear
+    padding: 0 20px
+    display: block
+    width: 100%
+    text-align: center
+    max-height: 362px
+
+    span
+      display: block
+      width: 100%
+      font-size: 24px
+      margin: 20px auto
+      cursor: pointer
+
+      &.selected
+        font-size: 42px
+        color: $primary
+
+  div.datePicker--actions
+    width: 100%
+    padding: 8px
+    text-align: right
+
+    button
+      font-size: 15px
+      cursor: pointer
+      color: $primary
+      border: none
+      min-width: 64px
+      background-color: transparent
+      appearance: none
+      border-radius: 2px
+      transition: background-color .13s
+      &:hover, &:focus
+        outline: none
+        color: $white
+        background-color: $primary
+
+.datePicker--background
+  z-index: 199
+  position: fixed
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0
+  background: rgba(0,0,0,.52)
+  animation: fadeIn .22s forwards
+

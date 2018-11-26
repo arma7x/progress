@@ -18,7 +18,7 @@ export default class Counter extends Component {
 			easing: 'easeInOut',
 			color: '#ED6A5A',
 			trailColor: '#bbb',
-			strokeWidth: 7,
+			strokeWidth: 10,
 			text: {
 				style: {
 					fontFamily: '"Raleway", Helvetica, sans-serif',
@@ -35,7 +35,7 @@ export default class Counter extends Component {
 				}
 			},
 		}
-		const small = JSON.parse(JSON.stringify(large));
+		const small = Object.assign({}, large);
 		small.text.style.fontSize = '0.8rem'
 		small.text.style.position = 'relative'
 		this.counterDay = new Circle('#counterDay', {...large, color: '#4885ed'});

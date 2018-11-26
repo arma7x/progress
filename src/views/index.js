@@ -7,19 +7,29 @@ import Article from './pages/article';
 import Error404 from './pages/errors/404';
 import Credit from './pages/credit';
 import Blog from './pages/blog';
-import store from '../libraries/redux';
+import redux from '../libraries/redux';
+import { task_db } from '../libraries/db';
 
-store.subscribe(() =>
-  console.log(store.getState())
-)
+task_db.keys()
+.then((data) => {
+	redux.dispatch({ type: 'POPULATE_TASK_DB', data })
+})
+.catch((e) => {
+	console.trace(e);
+})
 
-// track pages on route change
-// const onChange = obj => window.ga && ga.send('pageview', { dp:obj.url });  onChange={ // onChange }
+//task_db.delete('key')
+//.then(() => {
+	//redux.dispatch({ type: 'DELETE_TASK_DB', key: 'key' })
+//})
+//.catch((e) => {
+	//console.trace(e);
+//})
 
 export default (
 	<Layout>
 		<Router>
-			<Home path="/" redux={store}/>
+			<Home path="/" redux={redux}/>
 			<Blog path="/blog" />
 			<Article path="/blog/:title" />
 			<Credit path="/credit" />

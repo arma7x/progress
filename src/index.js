@@ -1,5 +1,4 @@
 import { render } from 'preact';
-//import GAnalytics from 'ganalytics';
 import './index.sass';
 
 let elem, App;
@@ -16,8 +15,6 @@ if (process.env.NODE_ENV === 'production') {
 		navigator.serviceWorker.register('/sw.js');
 	}
 
-	// add Google Analytics
-	//window.ga = new GAnalytics('UA-XXXXXXXX-X');
 } else {
 	// use preact's devtools
 	require('preact/devtools');

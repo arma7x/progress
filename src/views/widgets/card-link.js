@@ -3,6 +3,6 @@ import { Link } from 'preact-router';
 
 export default function (props) {
 	return (
-		<Link href={ props.href } className="card">{ props.children }</Link>
+		<Link href={ props.href } className="card" style={props.style}>{ props.children }</Link>
 	)
 };

@@ -5,15 +5,32 @@ export default class Modal extends Component {
 	constructor() {
 		super()
 		this.state = {
-			visible: false
+			visible: false,
+			height: ''
 		}
 		this.onOpened = undefined
 		this.onClosed = undefined
 	}
 
+	componentDidMount() {
+		this._init(this.props);
+	}
+
+	componentWillReceiveProps(props) {
+		this._init(props);
+	}
+
 	_init(props) {
-		if (props.visible !== undefined && props.visible !== this.props.visible) {
+		if (props.visible !== undefined && props.visible !== this.state.visible) {
 			this.setState({ visible: props.visible })
+			if (props.visible === true) {
+				const content = document.getElementById('content')
+				if ((window.innerHeight > content.offsetHeight) === false) {
+					this.setState({ height: `${content.offsetHeight+20}px` })
+				} else {
+					this.setState({ height: `${window.innerHeight}px` })
+				}
+			}
 			if (props.visible === true && this.onOpened !== undefined) {
 				this.onOpened();
 			} else if (props.visible === false && this.onClosed !== undefined) {
@@ -28,20 +45,12 @@ export default class Modal extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this._init(this.props);
-	}
-
-	componentWillReceiveProps(props) {
-		this._init(props);
-	}
-
 	render () {
-		const { visible } = this.state;
+		const { visible, height } = this.state;
 		
 		if (visible) {
 			return (
-				<div class="popup blur">
+				<div class="popup" style={`height:${height}`}>
 					<div class="col-md-offset-4 col-md-4">
 						{this.props.children ? this.props.children : null}
 					</div>

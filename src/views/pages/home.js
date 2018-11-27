@@ -3,12 +3,12 @@ import { Link } from 'preact-router';
 import objectHash from 'object-hash'
 import Card from '../widgets/card';
 import CardLink from '../widgets/card-link';
-import Counter from '../widgets/counter';
 import DatePicker from '../widgets/calendar';
 import Modal from '../widgets/modal';
 import { task_db } from '../../libraries/db';
+import { Line } from 'progressbar.js';
 
-const icon = 'data:image/jpeg;base64,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'
+const icon = 'data:image/jpeg;base64,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'
 
 export default class Home extends Component {
 
@@ -23,25 +23,37 @@ export default class Home extends Component {
 			task_target: 0,
 			task_date: new Date().toLocaleDateString(),
 		}
+		this.unsubscribe = undefined
 		this.openDatePicker = this.openDatePicker.bind(this);
 		this.closeDatePicker = this.closeDatePicker.bind(this);
 		this.dateReceiver = this.dateReceiver.bind(this);
+		this.line = []
 	}
 
 	componentDidMount() {
-		document.title = `${document.title} - Home`
-		this.processTaskList()
-		this.props.redux.subscribe(() => {
-			this.processTaskList()
-		})
+		this.sortTaskList()
+		if (this.unsubscribe === undefined) {
+			this.unsubscribe = this.props.redux.subscribe(() => {
+				this.sortTaskList()
+			})
+		}
 	}
 
-	processTaskList() {
+	componentWillUnmount() {
+		if (this.unsubscribe !== undefined) {
+			this.unsubscribe();
+		}
+	}
+
+	sortTaskList() {
 		let task_list = []
 		Object.entries(this.props.redux.getState().task_db).forEach(([key, value]) => {
 			task_list.push({...value, key});
 		})
-		this.setState({task_list});
+		if (task_list.length > 0) {
+			task_list.sort((a, b) => {return a.insert_at - b.insert_at});
+			this.setState({task_list});
+		}
 	}
 
 	processIcon() {
@@ -53,10 +65,6 @@ export default class Home extends Component {
 			};
 			freader.readAsDataURL(icon.files[0]);
 		}
-	}
-
-	selectIcon() {
-		document.getElementById('select-icon').click();
 	}
 
 	addTask() {
@@ -98,6 +106,52 @@ export default class Home extends Component {
 		});
 	}
 
+	generateBadge(task) {
+		const large = {
+			easing: 'easeInOut',
+			color: '#663AB6',
+			trailColor: '#bbb',
+			strokeWidth: 3,
+			text: {
+				style: {
+					fontFamily: '"Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif',
+					fontSize: '0.8rem',
+					fontWeight: 'bold',
+					position: 'absolute',
+					right: '0',
+					top: '0',
+					padding: 0,
+					margin: '13px -10px 0px 0px',
+					transform: {
+						prefix: true,
+						value: 'translate(-50%, -50%)'
+					}
+				}
+			},
+		}
+		const now = new Date()
+		const start_date = new Date(task.reboot_history[0])
+		const end_date = new Date(task.reboot_history[0])
+		end_date.setDate(start_date.getDate() + task.target)
+		const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
+		setTimeout(() => {
+			if (this.line[task.key] !== undefined)
+				this.line[task.key].destroy()
+			this.line[task.key] = new Line(`#line${task.key}`, large)
+			this.line[task.key].animate((task.target - remain) / task.target)
+			this.line[task.key].setText(`${Math.ceil(((task.target - remain) / task.target) * 100).toFixed(0)}%`)
+		},1000);
+		return (
+			<div class="col-xs-8" style="padding:5px;padding-right:15px">
+				<div style="height:75%;display:flex;flex-direction:column;justify-content:space-between;">
+				<strong>#{task.name}</strong>
+				<h5 class="badge">Achievement {(task.target - remain)}/{task.target} Days</h5>
+				<div id={`line${task.key}`}></div>
+				</div>
+			</div>
+		)
+	}
+
 	openDatePicker() {
 		this.setState({ datePickerOpened: true });
 	}
@@ -123,26 +177,27 @@ export default class Home extends Component {
 
 		return (
 			<div className="page page__home">
-				{false && <Card>
-					<Counter/>
-				</Card>
+				{ 
+					modalOpened === false &&
+					<div style="display: flex;flex-direction:row-reverse;">
+						<button class="fab" onClick={() => {this.setState({ modalOpened: true })}}>
+							<i class="material-icons icon">&#xE145;</i>
+						</button>
+					</div>
 				}
 				{
 					task_list.map(i =>
-						<CardLink href={ `/blog/article${i.key}` } style="padding:0px;">
+						<CardLink href={`/task/${i.key}`} style="padding:0px;">
 							<div class="row" style="padding:0px;">
 								<div class="col-xs-4">
 									<img src={i.icon} style="border-top-left-radius:2px;border-bottom-left-radius:2px;margin:0px;"/>
 								</div>
-								<div class="col-xs-4" style="padding:0px">
-									<strong>#{i.name}</strong>
-								</div>
+								{this.generateBadge(i)}
 							</div>
 						</CardLink>
 					)
 				}
-				<button style="color:#ffffff;" onClick={() => {this.setState({ modalOpened: true })}}>ADD NEW TASK</button>
-				<Modal visible={this.state.modalOpened} onClosed={() => this.cancelTask()} onOpened={() => this.cancelTask()}>
+				<Modal visible={modalOpened} onClosed={() => this.cancelTask()} onOpened={() => this.cancelTask()}>
 					<Card>
 						<form onSubmit={e => { e.preventDefault(); }}>
 							<div class="icon-placeholder">
@@ -150,7 +205,9 @@ export default class Home extends Component {
 									<input id="select-icon" type="file" accept="image/*" 
 										onChange={() => this.processIcon() }
 									/>
-									<img onClick={() => this.selectIcon()} src={task_icon} style="border-radius:50%;width:120px;height:120px"/>
+									<img onClick={() => 
+										document.getElementById('select-icon').click()
+									} src={task_icon} style="border-radius:50%;width:120px;height:120px"/>
 								</span>
 							</div>
 							<div class="group">

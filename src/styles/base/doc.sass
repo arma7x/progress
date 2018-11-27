@@ -74,7 +74,7 @@ form
 
 .group
   position: relative
-  margin: 25px 0 5px 0;
+  margin: 25px 0 5px 0
 
 textarea
   resize: none
@@ -85,7 +85,7 @@ input,textarea
   font-size: 14px
   padding: 10px 10px 10px 5px
   display: block
-  width: 100%;
+  width: 100%
   border: none
   border-radius: 0
   border-bottom: 1px solid $muted-color
@@ -128,12 +128,58 @@ label
     transition: $trans-time ease all
     left: 0%
 
-
 .blur
 	background: #C0C0C01A
-	filter: blur(0.1px)
+	filter: blur(0.2px)
 
 .icon-placeholder
 	all: unset
 	input[type=file]
 		display: none
+
+.fab
+	clear: all
+	position: fixed
+	bottom: 5%
+	display: inline-block
+	outline: none
+	-webkit-user-select: none
+	user-select: none
+	cursor: pointer
+	width: 60px
+	height: 60px
+	z-index: 999
+	background: $primary
+	border-radius: 50%
+	transition: 0.2s opacity ease-in-out
+	-webkit-transition: 0.2s opacity ease-in-out
+	border: 0
+	overflow: hidden
+	@extend %shadow
+
+	.icon
+		color: $white
+		text-align: center
+		font-size: 45px
+		margin-top: -160%
+		margin-left: -520%
+
+	&:not(:active):after
+		animation: ripple 3s ease-out
+	&::after
+		visibility: hidden
+	&:focus:after
+		visibility: visible
+
+@keyframes ripple
+	0% { transform: scale(0) }
+	20% { transform: scale(1) }
+	100% { opacity: 0; transform: scale(1) }
+
+.badge
+	border-radius: 30px
+	padding: 5px 10px
+	background: $offwhite
+
+	.badge__primary
+		background: $primary

@@ -3,12 +3,12 @@ import { Router } from 'preact-router';
 
 import Layout from './widgets/layout';
 import Home from './pages/home';
-import Article from './pages/article';
+import Task from './pages/task';
 import Error404 from './pages/errors/404';
-import Credit from './pages/credit';
-import Blog from './pages/blog';
 import redux from '../libraries/redux';
 import { task_db } from '../libraries/db';
+
+const navigate = new Event('navigate');
 
 task_db.keys()
 .then((data) => {
@@ -28,11 +28,11 @@ task_db.keys()
 
 export default (
 	<Layout>
-		<Router>
+		<Router onChange={() => {
+			window.dispatchEvent(navigate)
+		}}>
 			<Home path="/" redux={redux}/>
-			<Blog path="/blog" />
-			<Article path="/blog/:title" />
-			<Credit path="/credit" />
+			<Task path="/task/:id" redux={redux}/>
 			<Error404 default />
 		</Router>
 	</Layout>

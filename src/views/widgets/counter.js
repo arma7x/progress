@@ -11,6 +11,7 @@ export default class Counter extends Component {
 
 	constructor() {
 		super()
+		this.timer = undefined
 	}
 
 	componentDidMount() {
@@ -18,11 +19,12 @@ export default class Counter extends Component {
 			easing: 'easeInOut',
 			color: '#ED6A5A',
 			trailColor: '#bbb',
-			strokeWidth: 10,
+			strokeWidth: 15,
 			text: {
 				style: {
-					fontFamily: '"Raleway", Helvetica, sans-serif',
+					fontFamily: '"Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif',
 					fontSize: '1.2rem',
+					fontWeight: 'bold',
 					position: 'absolute',
 					left: '50%',
 					top: '50%',
@@ -35,23 +37,27 @@ export default class Counter extends Component {
 				}
 			},
 		}
-		const small = Object.assign({}, large);
+		const small = JSON.parse(JSON.stringify(large));
 		small.text.style.fontSize = '0.8rem'
+		small.text.style.fontWeight = 'normal'
 		small.text.style.position = 'relative'
 		this.counterDay = new Circle('#counterDay', {...large, color: '#4885ed'});
 		this.counterHour = new SemiCircle('#counterHour', {...small, color: ' #db3236'});
 		this.counterMin = new SemiCircle('#counterMin', {...small, color: '#f4c20d'});
 		this.counterSec = new SemiCircle('#counterSec', {...small, color: '#3cba54'});
-		setInterval(() => {
+		const { task } = this.props;
+		this.timer = setInterval(() => {
 			const now = new Date()
+			const start_date = new Date(task.reboot_history[0])
+			const end_date = new Date(task.reboot_history[0])
+			end_date.setDate(start_date.getDate() + task.target)
+			const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
 			const day = now.getDate()
-			//var month = (now.getMonth() + 1)
-			//var year = now.getFullYear()
 			const hour = now.getHours()
 			const minute = now.getMinutes()
 			const second = now.getSeconds()
-			this.counterDay.animate(day/60);
-			this.counterDay.setText(`${day}/60 <br>Days`);
+			this.counterDay.animate((task.target - remain) / task.target);
+			this.counterDay.setText(`${(task.target - remain)}/${task.target}<br>Days`);
 			this.counterHour.animate(hour/24);
 			this.counterHour.setText(`${hour} <br>${now.toLocaleString().split(' ')[2]}`);
 			this.counterMin.animate(minute/60);
@@ -59,6 +65,12 @@ export default class Counter extends Component {
 			this.counterSec.animate(second/60);
 			this.counterSec.setText(`${second} <br>Seconds`);
 		},1000);
+	}
+
+	componentWillUnmount() {
+		if (this.timer !== undefined) {
+			clearInterval(this.timer);
+		}
 	}
 
 	render () {

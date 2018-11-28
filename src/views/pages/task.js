@@ -15,13 +15,14 @@ export default class Task extends Component {
 	}
 
 	componentDidMount() {
-		document.title = `Task`
+		this.props.redux.dispatch({ type: 'SET_UI_TITLE', value: 'Task' })
 		const { id } = this.props;
 		task_db.get(id)
 		.then((task) => {
 			if (task !== undefined) {
 				this.setState({task})
-				document.title = `Task - ${task.name}`
+				document.title = task.name
+				this.props.redux.dispatch({ type: 'SET_UI_TITLE', value: task.name })
 			}
 		})
 		.catch((e) => {

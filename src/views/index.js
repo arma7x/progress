@@ -27,8 +27,9 @@ task_db.keys()
 //})
 
 export default (
-	<Layout>
-		<Router onChange={() => {
+	<Layout redux={redux}>
+		<Router onChange={(e) => {
+			redux.dispatch({ type: 'SET_ROUTE_URL', value: e.url })
 			window.dispatchEvent(navigate)
 		}}>
 			<Home path="/" redux={redux}/>

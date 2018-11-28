@@ -50,8 +50,8 @@ export default class Modal extends Component {
 		
 		if (visible) {
 			return (
-				<div class="popup" style={`height:${height}`}>
-					<div class="col-md-offset-4 col-md-4">
+				<div class="modal" style={`height:${height}`}>
+					<div class={"col-md-offset-4 col-md-4 animated faster slideInDown"}>
 						{this.props.children ? this.props.children : null}
 					</div>
 				</div>

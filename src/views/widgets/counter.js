@@ -4,14 +4,13 @@ import { SemiCircle, Circle } from 'progressbar.js';
 
 export default class Counter extends Component {
 
-	counterDay = null;
-	counterMin = null;
-	counterSec = null;
-	counterHour = null;
-
 	constructor() {
 		super()
 		this.timer = undefined
+		this.counterDay = undefined
+		this.counterMin = undefined
+		this.counterSec = undefined
+		this.counterHour = undefined
 	}
 
 	componentDidMount() {
@@ -20,6 +19,14 @@ export default class Counter extends Component {
 			color: '#ED6A5A',
 			trailColor: '#bbb',
 			strokeWidth: 15,
+			step: (state, progress) => {
+				const value = Math.round(progress.value() * 100);
+				if (value === 0) {
+					progress.setText('0/0<br>Days');
+				} else {
+					progress.setText(`${value}/${progress._opts.__max}<br>Days`);
+				}
+			},
 			text: {
 				style: {
 					fontFamily: '"Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -56,6 +63,7 @@ export default class Counter extends Component {
 			const hour = now.getHours()
 			const minute = now.getMinutes()
 			const second = now.getSeconds()
+			this.counterDay._opts.__max = task.target
 			this.counterDay.animate((task.target - remain) / task.target);
 			this.counterDay.setText(`${(task.target - remain)}/${task.target}<br>Days`);
 			this.counterHour.animate(hour/24);
@@ -68,9 +76,24 @@ export default class Counter extends Component {
 	}
 
 	componentWillUnmount() {
-		if (this.timer !== undefined) {
-			clearInterval(this.timer);
-		}
+		if (this.timer !== undefined)
+			clearInterval(this.timer)
+		if (this.counterDay !== undefined)
+			this.counterDay.destroy()
+		if (this.counterMin !== undefined)
+			this.counterMin.destroy()
+		if (this.counterSec !== undefined)
+			this.counterSec.destroy()
+		if (this.counterHour !== undefined)
+			this.counterHour.destroy()
+	}
+
+	renderBadge(task) {
+		const now = new Date()
+		const start_date = new Date(task.reboot_history[0])
+		const end_date = new Date(task.reboot_history[0])
+		end_date.setDate(start_date.getDate() + task.target)
+		const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
 	}
 
 	render () {

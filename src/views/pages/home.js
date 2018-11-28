@@ -31,10 +31,10 @@ export default class Home extends Component {
 
 	componentDidMount() {
 		this.props.redux.dispatch({ type: 'SET_UI_TITLE', value: 'Insanity' })
+		this.setState({ task_icon: this.props.redux.getState().ui.icon });
 		this.sortTaskList()
 		if (this.unsubscribe === undefined) {
 			this.unsubscribe = this.props.redux.subscribe(() => {
-				this.setState({ task_icon: this.props.redux.getState().ui.icon });
 				this.sortTaskList()
 			})
 		}

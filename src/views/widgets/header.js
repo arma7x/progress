@@ -31,8 +31,8 @@ export default class Header extends Component {
 		}, false);
 		if (this.unsubscribe === undefined) {
 			this.unsubscribe = this.props.redux.subscribe(() => {
-				document.title = this.props.redux.getState().ui.title
-				this.setState({ title: this.props.redux.getState().ui.title })
+				document.title = this.props.redux.getState().route.title
+				this.setState({ title: this.props.redux.getState().route.title })
 				this.timeout = setTimeout(() => {
 					this.setState({ url: this.props.redux.getState().route.url })
 				}, 200);

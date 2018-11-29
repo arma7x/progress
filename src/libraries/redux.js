@@ -7,10 +7,10 @@ const icon = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAUFBQUFBQY
 let initState = {
 	task_db: {},
 	ui: {
-		title: 'Insanity',
 		icon,
 	},
 	route: {
+		title: 'Milestone',
 		url: '/',
 	}
 }
@@ -26,8 +26,8 @@ function counter(state = initState, action) {
 		case 'DELETE_TASK_DB':
 			delete state.task_db[action.key]
 			return state
-		case 'SET_UI_TITLE':
-			state.ui.title = action.value
+		case 'SET_ROUTE_TITLE':
+			state.route.title = action.value
 			return state
 		case 'SET_ROUTE_URL':
 			state.route.url = action.value

@@ -39,7 +39,7 @@ export default  class Layout extends Component {
 			<div id="app">
 				<Header redux={this.props.redux}/>
 				<main id="content">
-					<div id="navBody" class="col-md-offset-4 col-md-4 animated headShake">
+					<div id="navBody" class="col-md-offset-4 col-md-4">
 						{ this.props.children }
 					</div>
 				</main>

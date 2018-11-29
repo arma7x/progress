@@ -22,7 +22,7 @@ export default class Counter extends Component {
 			step: (state, progress) => {
 				const value = Math.round(progress.value() * 100);
 				if (value === 0) {
-					progress.setText('0/0<br>Days');
+					progress.setText(`0/${progress._opts.__max ? progress._opts.__max : 0}<br>Days`);
 				} else {
 					progress.setText(`${value}/${progress._opts.__max}<br>Days`);
 				}
@@ -55,17 +55,17 @@ export default class Counter extends Component {
 		const { task } = this.props;
 		this.timer = setInterval(() => {
 			const now = new Date()
-			const start_date = new Date(task.reboot_history[0])
-			const end_date = new Date(task.reboot_history[0])
-			end_date.setDate(start_date.getDate() + task.target)
+			const start_date = new Date(task.reboot_history[0][0])
+			const end_date = new Date(task.reboot_history[0][0])
+			end_date.setDate(start_date.getDate() + task.reboot_history[0][1])
 			const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
 			const day = now.getDate()
 			const hour = now.getHours()
 			const minute = now.getMinutes()
 			const second = now.getSeconds()
-			this.counterDay._opts.__max = task.target
-			this.counterDay.animate((task.target - remain) / task.target);
-			this.counterDay.setText(`${(task.target - remain)}/${task.target}<br>Days`);
+			this.counterDay._opts.__max = task.reboot_history[0][1]
+			this.counterDay.animate((task.reboot_history[0][1] - remain) / task.reboot_history[0][1]);
+			this.counterDay.setText(`${(task.reboot_history[0][1] - remain)}/${task.reboot_history[0][1]}<br>Days`);
 			this.counterHour.animate(hour/24);
 			this.counterHour.setText(`${hour} <br>${now.toLocaleString().split(' ')[2]}`);
 			this.counterMin.animate(minute/60);
@@ -90,9 +90,9 @@ export default class Counter extends Component {
 
 	renderBadge(task) {
 		const now = new Date()
-		const start_date = new Date(task.reboot_history[0])
-		const end_date = new Date(task.reboot_history[0])
-		end_date.setDate(start_date.getDate() + task.target)
+		const start_date = new Date(task.reboot_history[0][0])
+		const end_date = new Date(task.reboot_history[0][0])
+		end_date.setDate(start_date.getDate() + task.reboot_history[0][1])
 		const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
 	}
 

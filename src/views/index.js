@@ -18,6 +18,9 @@ task_db.keys()
 	console.trace(e);
 })
 
+//document.head.querySelector("[name~=theme-color][content]").content;
+//document.querySelector("meta[name='theme-color']").getAttribute('content');
+
 //task_db.delete('key')
 //.then(() => {
 	//redux.dispatch({ type: 'DELETE_TASK_DB', key: 'key' })

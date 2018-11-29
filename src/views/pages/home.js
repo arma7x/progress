@@ -1,12 +1,12 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router';
-import objectHash from 'object-hash'
+import objectHash from 'object-hash';
 import Card from '../widgets/card';
 import CardLink from '../widgets/card-link';
 import DatePicker from '../widgets/calendar';
 import Modal from '../widgets/modal';
 import { task_db } from '../../libraries/db';
-import { Line } from 'progressbar.js';
+import Report from '../widgets/report';
 
 export default class Home extends Component {
 
@@ -26,11 +26,10 @@ export default class Home extends Component {
 		this.openDatePicker = this.openDatePicker.bind(this);
 		this.closeDatePicker = this.closeDatePicker.bind(this);
 		this.dateReceiver = this.dateReceiver.bind(this);
-		this.line = []
 	}
 
 	componentDidMount() {
-		this.props.redux.dispatch({ type: 'SET_UI_TITLE', value: 'Insanity' })
+		this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: 'Milestone' })
 		this.setState({ task_icon: this.props.redux.getState().ui.icon });
 		this.sortTaskList()
 		if (this.unsubscribe === undefined) {
@@ -46,10 +45,6 @@ export default class Home extends Component {
 		}
 		if (this.unsubscribe !== undefined)
 			this.unsubscribe()
-		this.line.forEach((line, key) => {
-			if (line !== undefined)
-				line.destroy()
-		})
 	}
 
 	sortTaskList() {
@@ -76,7 +71,7 @@ export default class Home extends Component {
 
 	addTask() {
 		if (this.state.task_name.trim().length === 0) {
-			alert('Please give this task a simple name ?');
+			alert('Please give a simple name ?');
 			return
 		}
 		if (this.state.task_target < 1) {
@@ -84,15 +79,16 @@ export default class Home extends Component {
 			return
 		}
 		if ((/^((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/.test(this.state.task_date)) === false) {
-			alert('When will you start this task ?');
+			alert('When will you start ?');
 			return
 		}
 		const value = {
 			icon: this.state.task_icon,
 			name: this.state.task_name.trim(),
 			target: this.state.task_target,
-			reboot_history: [this.state.task_date],
+			reboot_history: [[this.state.task_date,this.state.task_target]],
 			insert_at: new Date().getTime(),
+			updated_at: new Date().getTime(),
 		}
 		task_db.set(objectHash(value), value)
 		.then(() => {
@@ -113,59 +109,6 @@ export default class Home extends Component {
 		});
 	}
 
-	renderBadge(task) {
-		const large = {
-			easing: 'easeInOut',
-			color: '#663AB6',
-			trailColor: '#bbb',
-			strokeWidth: 3,
-			text: {
-				style: {
-					fontFamily: '"Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif',
-					fontSize: '0.8rem',
-					fontWeight: 'bold',
-					position: 'absolute',
-					right: '0',
-					top: '0',
-					padding: 0,
-					margin: '13px -10px 0px 0px',
-					transform: {
-						prefix: true,
-						value: 'translate(-50%, -50%)'
-					}
-				}
-			},
-		}
-		const now = new Date()
-		const start_date = new Date(task.reboot_history[0])
-		const end_date = new Date(task.reboot_history[0])
-		end_date.setDate(start_date.getDate() + task.target)
-		const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
-		this.timeout = setTimeout(() => {
-			if (this.line[task.key] !== undefined)
-				this.line[task.key].destroy()
-			if (document.getElementById(`line${task.key}`) !== null) {
-				this.line[task.key] = new Line(`#line${task.key}`, large)
-				this.line[task.key].animate((task.target - remain) / task.target)
-				this.line[task.key].setText(`${Math.ceil(((task.target - remain) / task.target) * 100).toFixed(0)}%(${task.reboot_history.length})`)
-			}
-		}, 100);
-		return (
-			<div class="row" style="padding:0px;">
-				<div class="col-xs-4">
-					<img src={task.icon} style="border-top-left-radius:2px;border-bottom-left-radius:2px;margin:0px;"/>
-				</div>
-				<div class="col-xs-8" style="padding:5px;padding-right:15px">
-					<div style="height:75%;display:flex;flex-direction:column;justify-content:space-between;">
-						<strong>#{task.name}</strong>
-						<h5 class="badge">Achievement {(task.target - remain)}/{task.target} Days</h5>
-						<div id={`line${task.key}`}></div>
-					</div>
-				</div>
-			</div>
-		)
-	}
-
 	openDatePicker() {
 		this.setState({ datePickerOpened: true });
 	}
@@ -179,18 +122,11 @@ export default class Home extends Component {
 	}
 
 	render () {
-		const { 
-			datePickerOpened,
-			modalOpened,
-			task_icon,
-			task_name,
-			task_target,
-			task_date,
-			task_list,
-		} = this.state;
+		const { datePickerOpened, modalOpened, task_icon, task_name, task_target, task_date, task_list, } = this.state;
 
 		return (
 			<div className="page page__home">
+			
 				{ 
 					modalOpened === false &&
 					<div style="display: flex;flex-direction:row-reverse;">
@@ -202,7 +138,7 @@ export default class Home extends Component {
 				{
 					task_list.map(i => 
 						<CardLink href={`/task/${i.key}`} style="padding:0px;">
-							{this.renderBadge(i)}
+							<Report id={i.key} task={i} advanced={false}/>
 						</CardLink>
 					)
 				}
@@ -220,22 +156,22 @@ export default class Home extends Component {
 								</span>
 							</div>
 							<div class="group">
-								<input type="text" value={task_name} onInput={(e) => this.setState({task_name: e.target.value})}/>
+								<input type="text" value={task_name} onInput={(e) => this.setState({task_name: e.target.value})} required="required"/>
 								<span class="highlight"></span>
 								<span class="bar"></span>
-								<label>Please give this task a simple name ?</label>
+								<label>Please give a simple name ?</label>
 							</div>
 							<div class="group">
-								<input type="number" value={task_target}onInput={(e) => this.setState({task_target: parseInt(e.target.value)})}/>
+								<input type="number" value={task_target}onInput={(e) => this.setState({task_target: parseInt(e.target.value)})} required="required"/>
 								<span class="highlight"></span>
 								<span class="bar"></span>
 								<label>Number of days to achieve ?</label>
 							</div>
 							<div class="group">
-								<input type="text" value={task_date} onClick={this.openDatePicker} onInput={(e) => this.setState({task_date: e.target.value})}/>
+								<input type="text" value={task_date} onClick={this.openDatePicker} onInput={(e) => this.setState({task_date: e.target.value})} required="required"/>
 								<span class="highlight"></span>
 								<span class="bar"></span>
-								<label>When will you start this task ?</label>
+								<label>When will you start ?</label>
 							</div>
 							<button style="color:#ffffff;" onClick={() => this.addTask()}>
 								LET'S START

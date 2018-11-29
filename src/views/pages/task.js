@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import Card from '../widgets/card';
 import Counter from '../widgets/counter';
+import Report from '../widgets/report';
 import Error404 from './errors/404';
 import { task_db } from '../../libraries/db';
 // import 'babel-polyfill';
@@ -10,19 +11,19 @@ export default class Task extends Component {
 	constructor() {
 		super();
 		this.state = {
+			id: '',
 			task: {}
 		}
 	}
 
 	componentDidMount() {
-		this.props.redux.dispatch({ type: 'SET_UI_TITLE', value: 'Task' })
-		const { id } = this.props;
-		task_db.get(id)
+		this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: 'Task' })
+		task_db.get(this.props.id)
 		.then((task) => {
 			if (task !== undefined) {
-				this.setState({task})
+				this.setState({task, id: this.props.id})
 				document.title = task.name
-				this.props.redux.dispatch({ type: 'SET_UI_TITLE', value: task.name })
+				this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: task.name })
 			}
 		})
 		.catch((e) => {
@@ -31,8 +32,7 @@ export default class Task extends Component {
 	}
 
 	render() {
-		const { id } = this.props;
-		const { task } = this.state;
+		const { id, task } = this.state;
 
 		return (
 			<div className="page page__task">
@@ -43,9 +43,7 @@ export default class Task extends Component {
 							<h2><strong style="text-align:center;">{task.name !== undefined ? task.name : '#'}</strong></h2>
 							<Counter task={task}/>
 						</Card>
-						<Card>
-							{JSON.stringify(task, null, 2)}
-						</Card>
+						<Report id={id} task={task} advanced={true} wrapper={<Card style="padding:0px;" />}/>
 					</div> : 
 					<Error404/>
 				}

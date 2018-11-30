@@ -39,6 +39,10 @@ export default class Task extends Component {
 				{
 					task.name ? 
 					<div>
+						<button style="color:#fff;" onClick={() => {
+							const newtask =  {...task, target: task.target + 20}
+							this.setState({ task: newtask })
+						}}>ADD +20</button>
 						<Card>
 							<h2><strong style="text-align:center;">{task.name !== undefined ? task.name : '#'}</strong></h2>
 							<Counter task={task}/>

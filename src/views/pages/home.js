@@ -137,9 +137,7 @@ export default class Home extends Component {
 				}
 				{
 					task_list.map(i => 
-						<CardLink href={`/task/${i.key}`} style="padding:0px;">
-							<Report id={i.key} task={i} advanced={false}/>
-						</CardLink>
+						<Report id={i.key} task={i} advanced={false} wrapper={<CardLink href={`/task/${i.key}`} style="padding:0px;" />} />
 					)
 				}
 				<Modal visible={modalOpened} onClosed={() => this.cancelTask()} onOpened={() => this.cancelTask()}>

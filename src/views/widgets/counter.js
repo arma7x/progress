@@ -6,6 +6,9 @@ export default class Counter extends Component {
 
 	constructor() {
 		super()
+		this.state = {
+			task: {},
+		}
 		this.timer = undefined
 		this.counterDay = undefined
 		this.counterMin = undefined
@@ -14,19 +17,62 @@ export default class Counter extends Component {
 	}
 
 	componentDidMount() {
+		const { task } = this.props
+		this.setState({ task })
+	}
+
+	componentWillUpdate({task}) {
+		this.setState({task})
+		this.renderCounter()
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		//console.group('COUNTER');
+		//console.log('PROPS PREV '+prevProps.task.target);
+		//console.log('PROPS NOW '+this.props.task.target);
+		//console.log('STATE PREV '+prevState.task.target);
+		//console.log('STATE NOW '+this.state.task.target);
+		if (prevProps.task.target != this.props.task.target) {
+			this.setState({ task: this.props.task })
+			this.renderCounter()
+		}
+		//console.groupEnd('COUNTER');
+	}
+
+	componentWillUnmount() {
+		this.clear()
+	}
+
+	clear() {
+		if (this.counterDay !== undefined)
+			this.counterDay.destroy()
+		if (this.counterMin !== undefined)
+			this.counterMin.destroy()
+		if (this.counterSec !== undefined)
+			this.counterSec.destroy()
+		if (this.counterHour !== undefined)
+			this.counterHour.destroy()
+		if (this.timer !== undefined)
+			clearInterval(this.timer)
+	}
+
+	renderCounter() {
+		this.clear()
+		const { task } = this.state
 		const large = {
 			easing: 'easeInOut',
 			color: '#ED6A5A',
 			trailColor: '#bbb',
 			strokeWidth: 15,
-			step: (state, progress) => {
-				const value = Math.round(progress.value() * 100);
-				if (value === 0) {
-					progress.setText(`0/${progress._opts.__max ? progress._opts.__max : 0}<br>Days`);
-				} else {
-					progress.setText(`${value}/${progress._opts.__max}<br>Days`);
-				}
-			},
+			//step: (state, progress) => {
+				//const value = Math.round(progress.value() * 100);
+				//if (value === 0) {
+					//progress.setText(`0/${progress._opts.__max ? progress._opts.__max : 0}<br>Days`);
+				//} else {
+					//progress.setText(`${value}/${progress._opts.__max}<br>Days`);
+				//}
+				//console.log(value);
+			//},
 			text: {
 				style: {
 					fontFamily: '"Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -52,20 +98,19 @@ export default class Counter extends Component {
 		this.counterHour = new SemiCircle('#counterHour', {...small, color: ' #db3236'});
 		this.counterMin = new SemiCircle('#counterMin', {...small, color: '#f4c20d'});
 		this.counterSec = new SemiCircle('#counterSec', {...small, color: '#3cba54'});
-		const { task } = this.props;
 		this.timer = setInterval(() => {
 			const now = new Date()
 			const start_date = new Date(task.reboot_history[0][0])
 			const end_date = new Date(task.reboot_history[0][0])
-			end_date.setDate(start_date.getDate() + task.reboot_history[0][1])
+			end_date.setDate(start_date.getDate() + task.target)
 			const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
 			const day = now.getDate()
 			const hour = now.getHours()
 			const minute = now.getMinutes()
 			const second = now.getSeconds()
-			this.counterDay._opts.__max = task.reboot_history[0][1]
-			this.counterDay.animate((task.reboot_history[0][1] - remain) / task.reboot_history[0][1]);
-			this.counterDay.setText(`${(task.reboot_history[0][1] - remain)}/${task.reboot_history[0][1]}<br>Days`);
+			this.counterDay._opts.__max = task.target
+			this.counterDay.animate((task.target - remain) / task.target);
+			this.counterDay.setText(`${(task.target - remain)}/${task.target}<br>Days`);
 			this.counterHour.animate(hour/24);
 			this.counterHour.setText(`${hour} <br>${now.toLocaleString().split(' ')[2]}`);
 			this.counterMin.animate(minute/60);
@@ -73,27 +118,6 @@ export default class Counter extends Component {
 			this.counterSec.animate(second/60);
 			this.counterSec.setText(`${second} <br>Seconds`);
 		},1000);
-	}
-
-	componentWillUnmount() {
-		if (this.timer !== undefined)
-			clearInterval(this.timer)
-		if (this.counterDay !== undefined)
-			this.counterDay.destroy()
-		if (this.counterMin !== undefined)
-			this.counterMin.destroy()
-		if (this.counterSec !== undefined)
-			this.counterSec.destroy()
-		if (this.counterHour !== undefined)
-			this.counterHour.destroy()
-	}
-
-	renderBadge(task) {
-		const now = new Date()
-		const start_date = new Date(task.reboot_history[0][0])
-		const end_date = new Date(task.reboot_history[0][0])
-		end_date.setDate(start_date.getDate() + task.reboot_history[0][1])
-		const remain = Math.ceil((end_date.getTime() - now.getTime()) / (1000*60*60*24))
 	}
 
 	render () {

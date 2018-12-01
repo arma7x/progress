@@ -29,7 +29,9 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
-		this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: 'Milestone' })
+		if (document.getElementById('fallback') !== null)
+			document.getElementById('fallback').remove()
+		this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: 'Spree' })
 		this.setState({ task_icon: this.props.redux.getState().ui.icon });
 		this.sortTaskList()
 		if (this.unsubscribe === undefined) {
@@ -89,6 +91,7 @@ export default class Home extends Component {
 			reboot_history: [[this.state.task_date,this.state.task_target]],
 			insert_at: new Date().getTime(),
 			updated_at: new Date().getTime(),
+			note: '',
 		}
 		task_db.set(objectHash(value), value)
 		.then(() => {
@@ -126,12 +129,11 @@ export default class Home extends Component {
 
 		return (
 			<div className="page page__home">
-			
 				{ 
 					modalOpened === false &&
 					<div style="display: flex;flex-direction:row-reverse;">
 						<button class="fab animated slow fadeIn" onClick={() => {this.setState({ modalOpened: true })}}>
-							<i class="material-icons icon">&#xE145;</i>
+							<i class="material-icons">&#xE145;</i>
 						</button>
 					</div>
 				}

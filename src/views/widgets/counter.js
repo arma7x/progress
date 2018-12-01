@@ -19,24 +19,14 @@ export default class Counter extends Component {
 	componentDidMount() {
 		const { task } = this.props
 		this.setState({ task })
-	}
-
-	componentWillUpdate({task}) {
-		this.setState({task})
-		this.renderCounter()
+		this.calculateCounter()
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		//console.group('COUNTER');
-		//console.log('PROPS PREV '+prevProps.task.target);
-		//console.log('PROPS NOW '+this.props.task.target);
-		//console.log('STATE PREV '+prevState.task.target);
-		//console.log('STATE NOW '+this.state.task.target);
-		if (prevProps.task.target != this.props.task.target) {
+		if ((prevProps.task.target !== this.props.task.target) || (prevProps.task.reboot_history[0][0] !== this.props.task.reboot_history[0][0])) {
 			this.setState({ task: this.props.task })
-			this.renderCounter()
+			this.calculateCounter()
 		}
-		//console.groupEnd('COUNTER');
 	}
 
 	componentWillUnmount() {
@@ -56,7 +46,7 @@ export default class Counter extends Component {
 			clearInterval(this.timer)
 	}
 
-	renderCounter() {
+	calculateCounter() {
 		this.clear()
 		const { task } = this.state
 		const large = {
@@ -92,7 +82,7 @@ export default class Counter extends Component {
 		}
 		const small = JSON.parse(JSON.stringify(large));
 		small.text.style.fontSize = '0.8rem'
-		small.text.style.fontWeight = 'normal'
+		small.text.style.fontWeight = 'bold'
 		small.text.style.position = 'relative'
 		this.counterDay = new Circle('#counterDay', {...large, color: '#4885ed'});
 		this.counterHour = new SemiCircle('#counterHour', {...small, color: ' #db3236'});

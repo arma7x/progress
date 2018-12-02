@@ -4,6 +4,8 @@ import './index.sass';
 let elem, App;
 function init() {
 	App = require('./views').default;
+	if (document.getElementById('fallback') !== null)
+		document.getElementById('fallback').remove()
 	elem = render(App, document.getElementById('root'), elem);
 }
 

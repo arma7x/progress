@@ -1,6 +1,6 @@
 import idb from 'idb';
 
-const dbPromise = idb.open('Spree', 1, upgradeDB => {
+const dbPromise = idb.open('MAIN_DATABASE', 1, upgradeDB => {
 	upgradeDB.createObjectStore('tasks');
 });
 

@@ -5,8 +5,11 @@ import Card from '../widgets/card';
 import CardLink from '../widgets/card-link';
 import DatePicker from '../widgets/calendar';
 import Modal from '../widgets/modal';
-import { task_db } from '../../libraries/db';
 import Report from '../widgets/report';
+import { task_db } from '../../libraries/db';
+import Toast from '../../libraries/toast';
+
+const Toaster = new Toast('app')
 
 export default class Home extends Component {
 
@@ -20,6 +23,7 @@ export default class Home extends Component {
 			task_name: '',
 			task_target: 0,
 			task_date: new Date().toLocaleDateString(),
+			busy: true,
 		}
 		this.timeout = undefined
 		this.unsubscribe = undefined
@@ -29,9 +33,10 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
-		if (document.getElementById('fallback') !== null)
-			document.getElementById('fallback').remove()
-		this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: 'Spree' })
+		setTimeout(() => {
+			this.setState({ busy: false })
+		}, 600);
+		this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: 'Progress' })
 		this.setState({ task_icon: this.props.redux.getState().ui.icon });
 		this.sortTaskList()
 		if (this.unsubscribe === undefined) {
@@ -72,6 +77,9 @@ export default class Home extends Component {
 	}
 
 	addTask() {
+		if (this.state.busy === true) {
+			return
+		}
 		if (this.state.task_name.trim().length === 0) {
 			alert('Please give a simple name ?');
 			return
@@ -93,12 +101,16 @@ export default class Home extends Component {
 			updated_at: new Date().getTime(),
 			note: '',
 		}
+		this.setState({ busy: true })
 		task_db.set(objectHash(value), value)
 		.then(() => {
 			this.props.redux.dispatch({ type: 'PUT_TASK_DB', key: objectHash(value), value })
-			this.setState({ modalOpened: false })
+			Toaster.show('Successfully add new task')
+			this.setState({ modalOpened: false, busy: false })
 		})
 		.catch((e) => {
+			this.setState({ busy: false })
+			Toaster.show('Operation fail')
 			console.trace(e);
 		})
 	}
@@ -125,14 +137,14 @@ export default class Home extends Component {
 	}
 
 	render () {
-		const { datePickerOpened, modalOpened, task_icon, task_name, task_target, task_date, task_list, } = this.state;
+		const { datePickerOpened, modalOpened, busy, task_icon, task_name, task_target, task_date, task_list, } = this.state;
 
 		return (
 			<div className="page page__home">
 				{ 
-					modalOpened === false &&
+					modalOpened === false && busy === false &&
 					<div style="display: flex;flex-direction:row-reverse;">
-						<button class="fab animated slow fadeIn" onClick={() => {this.setState({ modalOpened: true })}}>
+						<button class="fab animated slow fadeIn" onClick={() => this.setState({ modalOpened: true })}>
 							<i class="material-icons">&#xE145;</i>
 						</button>
 					</div>

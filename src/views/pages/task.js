@@ -5,7 +5,6 @@ import Report from '../widgets/report';
 import Error404 from './errors/404';
 import { task_db } from '../../libraries/db';
 import Toast from '../../libraries/toast';
-// import 'babel-polyfill';
 
 const Toaster = new Toast('app')
 const now = new Date()

@@ -25,13 +25,13 @@ const task_db = {
 			return tx.complete;
 		});
 	},
-	clear() {
-		return dbPromise.then(db => {
-			const tx = db.transaction('tasks', 'readwrite');
-			tx.objectStore('tasks').clear();
-			return tx.complete;
-		});
-	},
+	//clear() {
+		//return dbPromise.then(db => {
+			//const tx = db.transaction('tasks', 'readwrite');
+			//tx.objectStore('tasks').clear();
+			//return tx.complete;
+		//});
+	//},
 	keys() {
 		return dbPromise.then(db => {
 			const tx = db.transaction('tasks');

@@ -79,9 +79,8 @@ export default class Home extends Component {
 	}
 
 	addTask() {
-		if (this.state.busy === true) {
+		if (this.state.busy === true)
 			return
-		}
 		if (this.state.task_name.trim().length === 0) {
 			alert('Please give a simple name ?');
 			return

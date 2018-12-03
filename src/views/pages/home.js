@@ -9,6 +9,8 @@ import Report from '../widgets/report';
 import { task_db } from '../../libraries/db';
 import Toast from '../../libraries/toast';
 
+//document.head.querySelector("[name~=theme-color][content]").content;
+//document.querySelector("meta[name='theme-color']").getAttribute('content');
 const Toaster = new Toast('app')
 
 export default class Home extends Component {

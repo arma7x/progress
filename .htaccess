@@ -1,5 +1,8 @@
 <IfModule mod_rewrite.c>
   Header set Cache-Control "public, max-age=31536000, no-cache"
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]

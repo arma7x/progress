@@ -54,15 +54,6 @@ export default class Counter extends Component {
 			color: '#ED6A5A',
 			trailColor: '#bbb',
 			strokeWidth: 15,
-			//step: (state, progress) => {
-				//const value = Math.round(progress.value() * 100);
-				//if (value === 0) {
-					//progress.setText(`0/${progress._opts.__max ? progress._opts.__max : 0}<br>Days`);
-				//} else {
-					//progress.setText(`${value}/${progress._opts.__max}<br>Days`);
-				//}
-				//console.log(value);
-			//},
 			text: {
 				style: {
 					fontFamily: '"Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -98,7 +89,6 @@ export default class Counter extends Component {
 			const hour = now.getHours()
 			const minute = now.getMinutes()
 			const second = now.getSeconds()
-			this.counterDay._opts.__max = task.target
 			this.counterDay.animate((task.target - remain) / task.target);
 			this.counterDay.setText(`${(task.target - remain)}/${task.target}<br>Days`);
 			this.counterHour.animate(hour/24);

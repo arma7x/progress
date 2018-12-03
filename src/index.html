@@ -26,5 +26,8 @@
     <div id="root">
 		<div id="fallback" class="animated infinite heartBeat" style="text-align:center;margin-top:40vh;font-weight:bold">LOADING<div>
 	</div>
+    <!-- Todo: only include in production -->
+    <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
+    <!-- built files will be auto injected -->
   </body>
 </html>

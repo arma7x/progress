@@ -42,7 +42,9 @@ export default class Report extends Component {
 		if (logs.length === 1) {
 			null
 		} else {
-			return (<div class="row">
+			return (
+				<div class="row center-xs">
+					<strong style="margin:5px 0 -5px 0">REBOOT LOGS</strong>
 					<div class="col-xs-12" style="padding:20px;">
 					{
 						logs.map((value, index) => {
@@ -54,7 +56,7 @@ export default class Report extends Component {
 									<small class="badge badge__primary">
 										<b>{start_date.toDateString()}</b>
 									</small>
-									<div style="margin:1px 0 -1px 0;"><i>|</i></div>
+									<div style="margin-top:6px"><i class="material-icons">&#xe5db;</i></div>
 									<div class="badge" style="text-align:left;border-radius:2px;width:95%;margin:auto;padding:5px">
 										<div class="row">
 											<div class="col-xs-4">
@@ -75,7 +77,7 @@ export default class Report extends Component {
 											<small>{logs[index][2]}</small>
 										</div>
 									</div>
-									<div style="margin-top:-3px;"><i>|</i></div>
+									<div><i class="material-icons">&#xe5db;</i></div>
 									{
 										index === (logs.length - 2) &&
 										<small class="badge badge__primary"><b>{end_date.toDateString()}</b></small>
@@ -183,7 +185,7 @@ export default class Report extends Component {
 			if (document.getElementById(`line${id}`) !== null) {
 				this.line = new Line(`#line${id}`, large)
 				this.line.animate((task.target - remain) / task.target)
-				this.line.setText(`<div>REBOOT: ${task.reboot_history.length > 1 ? task.reboot_history.length : 0}</div><div>${Math.ceil(((task.target - remain) / task.target) * 100).toFixed(0)}%</div>`)
+				this.line.setText(`<div>REBOOT: ${task.reboot_history.length > 1 ? (task.reboot_history.length -1) : 0}</div><div>${Math.ceil(((task.target - remain) / task.target) * 100).toFixed(0)}%</div>`)
 			}
 		}, 100);
 		this.setState({ start_date, end_date, remain});

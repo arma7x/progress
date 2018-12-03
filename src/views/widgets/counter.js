@@ -102,11 +102,11 @@ export default class Counter extends Component {
 			this.counterDay.animate((task.target - remain) / task.target);
 			this.counterDay.setText(`${(task.target - remain)}/${task.target}<br>Days`);
 			this.counterHour.animate(hour/24);
-			this.counterHour.setText(`${hour} <br>${now.toLocaleString().split(' ')[2]}`);
+			this.counterHour.setText(`${hour}<br>HOURS`);
 			this.counterMin.animate(minute/60);
-			this.counterMin.setText(`${minute} <br>Minutes`);
+			this.counterMin.setText(`${minute}<br>MINUTESs`);
 			this.counterSec.animate(second/60);
-			this.counterSec.setText(`${second} <br>Seconds`);
+			this.counterSec.setText(`${second}<br>SECONDs`);
 		},1000);
 	}
 

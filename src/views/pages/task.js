@@ -85,13 +85,13 @@ export default class Task extends Component {
 		}
 		const remain = -(Math.ceil((new Date(new Date(task.reboot_history[0][0]).setDate((new Date(task.reboot_history[0][0])).getDate() + task.target)).getTime() - now.getTime()) / (1000*60*60*24)))
 		if (days <= remain) {
-			Toaster.show(`Must be greater than ${remain}`)
+			Toaster.show(`Day must greater than ${remain}`)
 			return
 		}
 		const updated_task =  {...task, target: task.target + days, updated_at: now.getTime() }
 		task_db.set(this.state.id, updated_task)
 		.then(() => {
-			Toaster.show(`Successfully extend task ${task.name} to ${updated_task.target}`)
+			Toaster.show(`Successfully extend ${task.name} to ${updated_task.target} days`)
 			this.setState({ task: updated_task })
 			this.props.redux.dispatch({ type: 'PUT_TASK_DB', key: this.state.id, value: updated_task })
 		})

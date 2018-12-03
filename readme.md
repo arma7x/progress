@@ -1,6 +1,6 @@
 # Progress
 
-> Simple PWA to track your life goals 
+> Simple PWA to track your life goals and progress stored in IndexDB
 
 ## Install
 

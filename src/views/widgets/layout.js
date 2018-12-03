@@ -13,14 +13,14 @@ export default  class Layout extends Component {
 			const navBody = document.getElementById('navBody')
 			if (navBody !== null) {
 				if (this.props.redux.getState().route.url === '\/')
-					navBody.className = "col-md-offset-4 col-md-4 animated faster fadeOutLeft"
-				else
 					navBody.className = "col-md-offset-4 col-md-4 animated faster fadeOutRight"
+				else
+					navBody.className = "col-md-offset-4 col-md-4 animated faster fadeOutLeft"
 				this.timeout = setTimeout(() => {
 					if (this.props.redux.getState().route.url === '\/')
-						navBody.className = "col-md-offset-4 col-md-4 animated faster fadeInRight"
-					else
 						navBody.className = "col-md-offset-4 col-md-4 animated faster fadeInLeft"
+					else
+						navBody.className = "col-md-offset-4 col-md-4 animated faster fadeInRight"
 					this.timeout = setTimeout(() => {
 						navBody.className = "col-md-offset-4 col-md-4"
 					}, 500);

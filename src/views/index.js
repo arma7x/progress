@@ -10,6 +10,9 @@ import { task_db } from '../libraries/db';
 
 const navigate = new Event('navigate');
 
+//document.head.querySelector("[name~=theme-color][content]").content;
+//document.querySelector("meta[name='theme-color']").getAttribute('content');
+
 task_db.keys()
 .then((data) => {
 	redux.dispatch({ type: 'POPULATE_TASK_DB', data })
@@ -17,9 +20,6 @@ task_db.keys()
 .catch((e) => {
 	console.trace(e);
 })
-
-//document.head.querySelector("[name~=theme-color][content]").content;
-//document.querySelector("meta[name='theme-color']").getAttribute('content');
 
 export default (
 	<Layout redux={redux}>

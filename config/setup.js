@@ -34,7 +34,7 @@ module.exports = isProd => {
 			new ExtractText('styles.[hash].css'),
 			new SWPrecache({
 				cacheId: 'track-my-app',
-				staticFileGlobs: ['dist/*.{js,html,css,eot,svg,ttf,woff,woff2,png}'],
+				staticFileGlobs: ['dist/*.{js,html,css,eot,svg,ttf,woff,woff2}','dist/icon/*.{png}'],
 				minify: true,
 				filename: 'sw.js',
 				stripPrefix: 'dist/'

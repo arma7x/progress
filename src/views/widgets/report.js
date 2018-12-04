@@ -77,7 +77,7 @@ export default class Report extends Component {
 											<small>{logs[index][2]}</small>
 										</div>
 									</div>
-									<div><i class="material-icons">&#xe5db;</i></div>
+									<div><i class="material-icons">&#xe5d8;</i></div>
 									{
 										index === (logs.length - 2) &&
 										<small class="badge badge__primary"><b>{end_date.toDateString()}</b></small>

@@ -7,7 +7,7 @@ import Task from './pages/task';
 import Error404 from './pages/errors/404';
 import redux from '../libraries/redux';
 import { task_db } from '../libraries/db';
-
+import 'babel-polyfill';
 const navigate = new Event('navigate');
 
 task_db.keys()

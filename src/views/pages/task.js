@@ -17,7 +17,9 @@ export default class Task extends Component {
 			id: '',
 			task: {},
 			busy: true,
+			fab: true,
 		}
+		this.mylatesttap = new Date().getTime()
 	}
 
 	componentDidMount() {
@@ -36,6 +38,14 @@ export default class Task extends Component {
 		.catch((e) => {
 			console.trace(e);
 		})
+	}
+
+	doubletap() {
+		const timesince = new Date().getTime() - this.mylatesttap
+		if((timesince < 600) && (timesince > 0)){
+			this.setState({ fab: !this.state.fab });
+		}
+		this.mylatesttap = new Date().getTime();
 	}
 
 	delTask() {
@@ -101,49 +111,49 @@ export default class Task extends Component {
 	}
 
 	render() {
-		const { id, task } = this.state;
+		const { id, task, fab, busy } = this.state;
 
 		return (
 			<div className="page page__task">
 				{
 					task.name ? 
-					<div>
+					<div onClick={() => this.doubletap() }>
 						<Card style={`background:url(${task.icon});background-size:cover;background-repeat:no-repeat;background-position: center center;`}>
 							<Counter task={task}/>
 						</Card>
 						<Report id={id} task={task} advanced={true} wrapper={<Card style="padding:0px;" />}/>
 							{
-								this.state.busy === false &&
-							<div style="display:flex;flex-direction:row-reverse;">
-								<div class="fab-cascade">
-									<span class="fab-action-button animated slow fadeIn">
-										<i class="fab-action-button__icon material-icons">&#xe8b8;</i>
-									</span>
-									<ul class="fab-menu-buttons">
-										<li class="fab-menu-buttons__item">
-											<a onClick={() => this.delTask()} class="fab-menu-buttons__link" style="background-color:#db3236;color:#fff;" data-tooltip="Delete">
-												<i class="material-icons">&#xE872;</i>
-											</a>
-										</li>
-										{
-											task.reboot_history[0][0] < now.toLocaleDateString() &&
+								busy === false && fab &&
+								<div style="display:flex;flex-direction:row-reverse;">
+									<div class="fab-cascade">
+										<span class="fab-action-button animated slow fadeIn">
+											<i class="fab-action-button__icon material-icons">&#xe8b8;</i>
+										</span>
+										<ul class="fab-menu-buttons">
 											<li class="fab-menu-buttons__item">
-												<a onClick={() => this.rebootTask()} class="fab-menu-buttons__link" style="background-color:#f4c20d;color:#fff;" data-tooltip="Reboot">
-													<i class="material-icons">&#xe5d5;</i>
+												<a onClick={() => this.delTask()} class="fab-menu-buttons__link" style="background-color:#db3236;color:#fff;" data-tooltip="Delete">
+													<i class="material-icons">&#xE872;</i>
 												</a>
 											</li>
-										}
-										{
-											((Math.ceil((new Date(new Date(task.reboot_history[0][0]).setDate((new Date(task.reboot_history[0][0])).getDate() + task.target)).getTime() - now.getTime()) / (1000*60*60*24))) <= 0) &&
-											<li class="fab-menu-buttons__item">
-												<a onClick={() => this.extendTask()} class="fab-menu-buttons__link" style="background-color:#3cba54;color:#fff;" data-tooltip="Extend">
-													<i class="material-icons">&#xe145;</i>
-												</a>
-											</li>
-										}
-									</ul>
+											{
+												task.reboot_history[0][0] < now.toLocaleDateString() &&
+												<li class="fab-menu-buttons__item">
+													<a onClick={() => this.rebootTask()} class="fab-menu-buttons__link" style="background-color:#f4c20d;color:#fff;" data-tooltip="Reboot">
+														<i class="material-icons">&#xe5d5;</i>
+													</a>
+												</li>
+											}
+											{
+												((Math.ceil((new Date(new Date(task.reboot_history[0][0]).setDate((new Date(task.reboot_history[0][0])).getDate() + task.target)).getTime() - now.getTime()) / (1000*60*60*24))) <= 0) &&
+												<li class="fab-menu-buttons__item">
+													<a onClick={() => this.extendTask()} class="fab-menu-buttons__link" style="background-color:#3cba54;color:#fff;" data-tooltip="Extend">
+														<i class="material-icons">&#xe145;</i>
+													</a>
+												</li>
+											}
+										</ul>
+									</div>
 								</div>
-							</div>
 							}
 					</div> : 
 					<Error404/>

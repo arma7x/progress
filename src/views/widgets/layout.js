@@ -10,19 +10,21 @@ export default  class Layout extends Component {
 
 	componentDidMount() {
 		window.addEventListener('navigate', (e) => {
-			const navBody = document.getElementById('navBody')
-			if (navBody !== null) {
+			const content = document.getElementById('content')
+			if (content !== null) {
 				if (this.props.redux.getState().route.url === '\/')
-					navBody.className = "col-md-offset-4 col-md-4 animated faster fadeOutRight"
+					content.className = "col-md-offset-4 col-md-4 animated faster fadeOutRight"
 				else
-					navBody.className = "col-md-offset-4 col-md-4 animated faster fadeOutLeft"
+					content.className = "col-md-offset-4 col-md-4 animated faster fadeOutLeft"
+				content.style.visibility = 'hidden'
 				this.timeout = setTimeout(() => {
+					content.style.visibility = 'visible'
 					if (this.props.redux.getState().route.url === '\/')
-						navBody.className = "col-md-offset-4 col-md-4 animated faster fadeInLeft"
+						content.className = "col-md-offset-4 col-md-4 animated faster fadeInLeft"
 					else
-						navBody.className = "col-md-offset-4 col-md-4 animated faster fadeInRight"
+						content.className = "col-md-offset-4 col-md-4 animated faster fadeInRight"
 					this.timeout = setTimeout(() => {
-						navBody.className = "col-md-offset-4 col-md-4"
+						content.className = "col-md-offset-4 col-md-4"
 					}, 500);
 				}, 200);
 			}
@@ -38,10 +40,8 @@ export default  class Layout extends Component {
 		return (
 			<div id="app">
 				<Header redux={this.props.redux}/>
-				<main id="content">
-					<div id="navBody" class="col-md-offset-4 col-md-4">
-						{ this.props.children }
-					</div>
+				<main id="content" class="col-md-offset-4 col-md-4 animated faster fadeIn">
+					{ this.props.children }
 				</main>
 			</div>
 		);

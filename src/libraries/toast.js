@@ -8,15 +8,19 @@ export default class Toast {
 		if (document.getElementById("snackbar") !== null) {
 			document.getElementById("snackbar").remove();
 		}
-		const snackbar = document.createElement("div");
-		snackbar.id = 'snackbar'
-		snackbar.className = "animated faster fadeInUp";
-		snackbar.appendChild(document.createTextNode(text));
-		document.getElementById(this.container).appendChild(snackbar);
+		const snackbarContainer = document.createElement("div");
+		snackbarContainer.id = 'snackbar'
+		snackbarContainer.className = "row center-xs animated faster fadeInUp";
+		snackbarContainer.style.margin = '0px'
+		const snackbarChild = document.createElement("div");
+		snackbarChild.className = "text"
+		snackbarChild.appendChild(document.createTextNode(text));
+		snackbarContainer.appendChild(snackbarChild);
+		document.getElementById(this.container).appendChild(snackbarContainer);
 		setTimeout(() => { 
-			snackbar.className = "animated faster fadeOutDown";
+			snackbarContainer.className = "row center-xs animated faster fadeOutDown";
 			setTimeout(() => {
-				snackbar.remove();
+				snackbarContainer.remove();
 			}, 600);
 		}, 3000);
 	}

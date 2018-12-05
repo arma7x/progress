@@ -67,7 +67,7 @@ export default class Home extends Component {
 		}
 	}
 
-	processIcon() {
+	processThumb() {
 		const icon = document.getElementById('select-icon');
 		if (icon.files.length > 0) {
 			const freader = new FileReader();
@@ -145,7 +145,7 @@ export default class Home extends Component {
 				{ 
 					modalOpened === false && busy === false &&
 					<div style="display: flex;flex-direction:row-reverse;">
-						<button class="fab animated slow fadeIn" onClick={() => this.setState({ modalOpened: true })}>
+						<button class="fab animated faster fadeIn" onClick={() => this.setState({ modalOpened: true })}>
 							<i class="material-icons">&#xE145;</i>
 						</button>
 					</div>
@@ -161,7 +161,7 @@ export default class Home extends Component {
 							<div class="icon-placeholder">
 								<span>
 									<input id="select-icon" type="file" accept="image/*" 
-										onChange={() => this.processIcon() }
+										onChange={() => this.processThumb() }
 									/>
 									<img onClick={() => 
 										document.getElementById('select-icon').click()

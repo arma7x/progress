@@ -8,29 +8,6 @@ export default  class Layout extends Component {
 		this.timeout = undefined
 	}
 
-	componentDidMount() {
-		window.addEventListener('navigate', (e) => {
-			const content = document.getElementById('content')
-			if (content !== null) {
-				if (this.props.redux.getState().route.url === '\/')
-					content.className = "col-md-offset-4 col-md-4 animated faster fadeOutRight"
-				else
-					content.className = "col-md-offset-4 col-md-4 animated faster fadeOutLeft"
-				content.style.visibility = 'hidden'
-				this.timeout = setTimeout(() => {
-					content.style.visibility = 'visible'
-					if (this.props.redux.getState().route.url === '\/')
-						content.className = "col-md-offset-4 col-md-4 animated faster fadeInLeft"
-					else
-						content.className = "col-md-offset-4 col-md-4 animated faster fadeInRight"
-					this.timeout = setTimeout(() => {
-						content.className = "col-md-offset-4 col-md-4"
-					}, 500);
-				}, 200);
-			}
-		}, false);
-	}
-
 	componentWillUnmount() {
 		if (this.timeout !== undefined)
 			clearTimeout(this.timeout)

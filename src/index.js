@@ -1,11 +1,9 @@
 import { render } from 'preact';
-// import 'babel-polyfill';
 import './index.sass';
 
 let elem, App;
-function init() {
-	if (document.getElementById('fallback') !== null)
-			document.getElementById('fallback').remove()
+
+const init = () => {
 	App = require('./views').default;
 	elem = render(App, document.getElementById('root'), elem);
 }

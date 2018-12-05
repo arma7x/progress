@@ -16,23 +16,6 @@ export default class Header extends Component {
 	}
 
 	componentDidMount() {
-		window.addEventListener('navigate', (e) => {
-			const header = document.getElementById('header')
-			if (header !== null) {
-				if (this.props.redux.getState().route.url === '\/')
-					header.className = "col-md-offset-4 col-md-4 animated faster fadeOutRight"
-				else
-					header.className = "col-md-offset-4 col-md-4 animated faster fadeOutLeft"
-				//header.style.visibility = 'hidden'
-				this.timeout = setTimeout(() => {
-					//header.style.visibility = 'visible'
-					if (this.props.redux.getState().route.url === '\/')
-						header.className = "col-md-offset-4 col-md-4 animated faster fadeInLeft"
-					else
-						header.className = "col-md-offset-4 col-md-4 animated faster fadeInRight"
-				}, 200);
-			}
-		}, false);
 		if (this.unsubscribe === undefined) {
 			this.unsubscribe = this.props.redux.subscribe(() => {
 				document.title = this.props.redux.getState().route.title

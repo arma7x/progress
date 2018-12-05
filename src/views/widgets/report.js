@@ -24,7 +24,7 @@ export default class Report extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((prevProps.task.target !== this.props.task.target) || (prevProps.task.reboot_history[0][0] !== this.props.task.reboot_history[0][0])) {
+		if (JSON.stringify(this.props.task) !== JSON.stringify(prevProps.task)) {
 			this.setState({ task: this.props.task })
 			this.renderReport()
 		}

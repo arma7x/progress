@@ -24,8 +24,13 @@ module.exports = isProd => {
 	if (isProd) {
 		plugins.push(
 			new Clean(['dist'], { root }),
-			new HTML({ 
+			new HTML({
 				template: 'src/index.html',
+				 minify: {
+					removeComments: true,
+					collapseWhitespace: true,
+					removeAttributeQuotes: true,
+				},
 				serviceWorkerLoader: `<script>${UglifyJS.minify(fs.readFileSync(join(__dirname, './service-worker-prod.js'), 'utf-8')).code}</script>`
 			}),
 			new webpack.LoaderOptionsPlugin({ minimize:true }),

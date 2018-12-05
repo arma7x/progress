@@ -48,7 +48,52 @@ export default class Task extends Component {
 		this.mylatesttap = new Date().getTime();
 	}
 
-	delTask() {
+	processThumb() {
+		const { id, task } = this.state;
+		const icon = document.getElementById('thumb');
+		if (icon.files.length > 0) {
+			const freader = new FileReader();
+			freader.onload = (e) => {
+				if(confirm('Are sure to change the thumbnail ?')) {
+					const updated_task =  {...task, icon: e.target.result, updated_at: now.getTime() }
+					task_db.set(this.state.id, updated_task)
+					.then(() => {
+						Toaster.show(`Successfully change thumbnail`)
+						this.setState({ task: updated_task })
+						this.props.redux.dispatch({ type: 'PUT_TASK_DB', key: this.state.id, value: updated_task })
+					})
+					.catch((e) => {
+						Toaster.show('Operation fail')
+						console.trace(e);
+					})
+				}
+			};
+			freader.readAsDataURL(icon.files[0]);
+		}
+	}
+
+	renameTask() {
+		const { id, task } = this.state;
+		const rename = prompt('Please enter new name ?')
+		if (rename.trim().length < 1) {
+			Toaster.show('Invalid input data')
+			return
+		}
+		const updated_task =  {...task, name: rename, updated_at: now.getTime() }
+		task_db.set(this.state.id, updated_task)
+		.then(() => {
+			Toaster.show(`Successfully rename to ${rename}`)
+			this.props.redux.dispatch({ type: 'SET_ROUTE_TITLE', value: rename })
+			this.setState({ task: updated_task })
+			this.props.redux.dispatch({ type: 'PUT_TASK_DB', key: this.state.id, value: updated_task })
+		})
+		.catch((e) => {
+			Toaster.show('Operation fail')
+			console.trace(e);
+		})
+	}
+
+	removeTask() {
 		if (prompt(`Confirm by enter '${this.state.task.name}'`) === this.state.task.name) {
 			task_db.delete(this.state.id)
 			.then(() => {
@@ -125,13 +170,24 @@ export default class Task extends Component {
 							{
 								busy === false && fab &&
 								<div style="display:flex;flex-direction:row-reverse;">
+									<input style="visibility:hidden;" id="thumb" type="file" accept="image/*" onChange={() => this.processThumb() }/>
 									<div class="fab-cascade">
-										<span class="fab-action-button animated slow fadeIn">
+										<span class="fab-action-button animated faster fadeIn">
 											<i class="fab-action-button__icon material-icons">&#xe8b8;</i>
 										</span>
 										<ul class="fab-menu-buttons">
 											<li class="fab-menu-buttons__item">
-												<a onClick={() => this.delTask()} class="fab-menu-buttons__link" style="background-color:#db3236;color:#fff;" data-tooltip="Delete">
+												<a onClick={() => this.renameTask()} class="fab-menu-buttons__link" style="background-color:#9CCC65;color:#fff;" data-tooltip="Rename">
+													<i class="material-icons">&#xe165;</i>
+												</a>
+											</li>
+											<li class="fab-menu-buttons__item">
+												<a onClick={() => document.getElementById('thumb').click()} class="fab-menu-buttons__link" style="background-color:#673AB7;color:#fff;" data-tooltip="Thumbnail">
+													<i class="material-icons">&#xe410;</i>
+												</a>
+											</li>
+											<li class="fab-menu-buttons__item">
+												<a onClick={() => this.removeTask()} class="fab-menu-buttons__link" style="background-color:#db3236;color:#fff;" data-tooltip="Delete">
 													<i class="material-icons">&#xE872;</i>
 												</a>
 											</li>

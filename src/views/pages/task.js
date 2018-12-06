@@ -75,6 +75,9 @@ export default class Task extends Component {
 	renameTask() {
 		const { id, task } = this.state;
 		const rename = prompt('Please enter new name ?')
+		if (rename === null) {
+			return
+		}
 		if (rename.trim().length < 1) {
 			Toaster.show('Invalid input data')
 			return
@@ -163,6 +166,7 @@ export default class Task extends Component {
 				{
 					task.name ? 
 					<div onClick={() => this.doubletap() }>
+						<input style="height:0;width:0;padding:0;margin:0;visibility:hidden;" id="thumb" type="file" accept="image/*" onChange={() => this.processThumb() }/>
 						<Card style={`background:url(${task.icon});background-size:cover;background-repeat:no-repeat;background-position: center center;`}>
 							<Counter task={task}/>
 						</Card>
@@ -170,7 +174,6 @@ export default class Task extends Component {
 							{
 								busy === false && fab &&
 								<div style="display:flex;flex-direction:row-reverse;">
-									<input style="visibility:hidden;" id="thumb" type="file" accept="image/*" onChange={() => this.processThumb() }/>
 									<div class="fab-cascade">
 										<span class="fab-action-button animated faster fadeIn">
 											<i class="fab-action-button__icon material-icons">&#xe8b8;</i>
@@ -184,11 +187,6 @@ export default class Task extends Component {
 											<li class="fab-menu-buttons__item">
 												<a onClick={() => document.getElementById('thumb').click()} class="fab-menu-buttons__link" style="background-color:#673AB7;color:#fff;" data-tooltip="Thumbnail">
 													<i class="material-icons">&#xe410;</i>
-												</a>
-											</li>
-											<li class="fab-menu-buttons__item">
-												<a onClick={() => this.removeTask()} class="fab-menu-buttons__link" style="background-color:#db3236;color:#fff;" data-tooltip="Delete">
-													<i class="material-icons">&#xE872;</i>
 												</a>
 											</li>
 											{
@@ -207,6 +205,11 @@ export default class Task extends Component {
 													</a>
 												</li>
 											}
+											<li class="fab-menu-buttons__item">
+												<a onClick={() => this.removeTask()} class="fab-menu-buttons__link" style="background-color:#db3236;color:#fff;" data-tooltip="Delete">
+													<i class="material-icons">&#xE872;</i>
+												</a>
+											</li>
 										</ul>
 									</div>
 								</div>

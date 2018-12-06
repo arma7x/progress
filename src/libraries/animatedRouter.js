@@ -39,7 +39,6 @@ function getCurrentUrl() {
 }
 
 
-
 function route(url, replace=false) {
 	if (typeof url!=='string' && url.url) {
 		replace = url.replace;
@@ -199,9 +198,9 @@ class Router extends Component {
 				this.timeout = setTimeout(() => {
 					content.className = "col-md-offset-4 col-md-4"
 				}, 300);
-			}, 250);
+			}, 200);
 		}
-		await new Promise(resolve => setTimeout(resolve, 205));
+		await new Promise(resolve => setTimeout(resolve, 200));
 		this._didRoute = false;
 		this.setState({ url });
 

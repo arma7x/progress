@@ -125,7 +125,8 @@ export default class Home extends Component {
 		});
 	}
 
-	openDatePicker() {
+	openDatePicker(e) {
+		e.preventDefault();
 		this.setState({ datePickerOpened: true });
 	}
 
@@ -157,7 +158,7 @@ export default class Home extends Component {
 				}
 				<Modal visible={modalOpened} onClosed={() => this.cancelTask()} onOpened={() => this.cancelTask()}>
 					<Card>
-						<form onSubmit={e => { e.preventDefault(); }}>
+						<form onSubmit={e => e.preventDefault() }>
 							<div class="icon-placeholder">
 								<span>
 									<input id="select-icon" type="file" accept="image/*" 
@@ -175,7 +176,7 @@ export default class Home extends Component {
 								<label>Please give a simple name ?</label>
 							</div>
 							<div class="group">
-								<input type="number" value={task_target}onInput={(e) => this.setState({task_target: parseInt(e.target.value)})} required="required"/>
+								<input type="number" value={task_target} onInput={(e) => this.setState({task_target: parseInt(e.target.value)})} required="required"/>
 								<span class="highlight"></span>
 								<span class="bar"></span>
 								<label>Number of days to achieve ?</label>
@@ -186,10 +187,10 @@ export default class Home extends Component {
 								<span class="bar"></span>
 								<label>When will you start ?</label>
 							</div>
-							<button style="color:#ffffff;" onClick={() => this.addTask()}>
+							<button onClick={() => this.addTask()}>
 								LET'S START
 							</button>
-							<button style="color:#ffffff;" onClick={() => this.setState({ modalOpened: false })}>
+							<button onClick={() => this.setState({ modalOpened: false })}>
 								CANCEL
 							</button>
 							<DatePicker closeFunction={this.closeDatePicker} opened={datePickerOpened} dateReceiver={this.dateReceiver} />

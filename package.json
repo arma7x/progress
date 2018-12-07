@@ -42,6 +42,8 @@
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.5.0",
     "postcss-loader": "^2.0.6",
+    "preact-async-route": "^2.2.1",
+    "preact-transition-group": "^1.1.1",
     "sass-loader": "^7.1.0",
     "sirv-cli": "^0.2.3",
     "style-loader": "^0.18.2",

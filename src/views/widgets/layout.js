@@ -17,7 +17,7 @@ export default  class Layout extends Component {
 		return (
 			<div id="app">
 				<Header redux={this.props.redux}/>
-				<main id="content" class="col-md-offset-4 col-md-4 animated faster fadeIn">
+				<main id="content">
 					{ this.props.children }
 				</main>
 			</div>

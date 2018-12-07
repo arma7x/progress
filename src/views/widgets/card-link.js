@@ -1,6 +1,5 @@
 import { h } from 'preact';
-//import { Link } from 'preact-router';
-import { Link } from '../../libraries/animatedRouter';
+import { Link } from 'preact-router';
 
 export default function (props) {
 	return (

@@ -1,6 +1,6 @@
 import { h } from 'preact'
-//import { Router } from 'preact-router';
-import { Router } from '../libraries/animatedRouter';
+import { Router } from 'preact-router';
+import LiquidRoute, {SlideLeft} from '../libraries/LiquidRoute';
 import Layout from './widgets/layout';
 import Home from './pages/home';
 import Task from './pages/task';
@@ -18,9 +18,18 @@ task_db.keys()
 
 export default (
 	<Layout redux={redux}>
-		<Router onChange={(e) => { redux.dispatch({ type: 'SET_ROUTE_URL', value: e.url }) }}>
-			<Home path="/" redux={redux}/>
-			<Task path="/task/:id" redux={redux}/>
+		<Router onChange={(e) => {
+			const header = document.getElementById('header')
+			if (header !== null) {
+				header.className = "col-md-offset-4 col-md-4 animated animated_fastest fadeOutLeft"
+				this.timeout = setTimeout(() => {
+					header.className = "col-md-offset-4 col-md-4 animated animated_fastest fadeInRight"
+				}, 300);
+			}
+			redux.dispatch({ type: 'SET_ROUTE_URL', value: e.url }) 
+		}}>
+			<LiquidRoute animator={SlideLeft} path="/" component={Home} redux={redux}/>
+			<LiquidRoute animator={SlideLeft} path="/task/:id" component={Task} redux={redux}/>
 			<Error404 default />
 		</Router>
 	</Layout>

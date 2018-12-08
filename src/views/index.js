@@ -10,7 +10,7 @@ import { task_db } from '../libraries/db';
 
 task_db.keys()
 .then((data) => {
-	redux.dispatch({ type: 'POPULATE_TASK_DB', data })
+	redux.dispatch({ type: 'INIT_TASK_DB', data })
 })
 .catch((e) => {
 	console.trace(e);
@@ -30,7 +30,7 @@ export default (
 		}}>
 			<LiquidRoute animator={SlideLeft} path="/" component={Home} redux={redux}/>
 			<LiquidRoute animator={SlideLeft} path="/task/:id" component={Task} redux={redux}/>
-			<Error404 default />
+			<LiquidRoute animator={SlideLeft} component={Error404} redux={redux} default/>
 		</Router>
 	</Layout>
 );

@@ -47,6 +47,14 @@ module.exports = env => {
 			}, {
 				test: /\.(sass|scss)$/,
 				use: isProd ? ExtractText.extract({ fallback:'style-loader', use:styles }) : styles
+			}, {
+				test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+				use: [{
+					loader: 'file-loader',
+					options: {
+						name: '[name].[ext]'
+					}
+				}]
 			}]
 		},
 		plugins: setup(isProd),

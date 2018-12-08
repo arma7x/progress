@@ -23,7 +23,7 @@ let initState = {
 
 function counter(state = initState, action) {
 	switch (action.type) {
-		case 'POPULATE_TASK_DB':
+		case 'INIT_TASK_DB':
 			state.task_db = action.data
 			return state
 		case 'PUT_TASK_DB':

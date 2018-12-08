@@ -10,7 +10,7 @@ export default class Toast {
 		}
 		const snackbarContainer = document.createElement("div");
 		snackbarContainer.id = 'snackbar'
-		snackbarContainer.className = "row center-xs animated faster fadeInUp";
+		snackbarContainer.className = "row center-xs animated faster fadeIn";
 		snackbarContainer.style.margin = '0px'
 		const snackbarChild = document.createElement("div");
 		snackbarChild.className = "text"
@@ -18,7 +18,7 @@ export default class Toast {
 		snackbarContainer.appendChild(snackbarChild);
 		document.getElementById(this.container).appendChild(snackbarContainer);
 		setTimeout(() => { 
-			snackbarContainer.className = "row center-xs animated faster fadeOutDown";
+			snackbarContainer.className = "row center-xs animated faster fadeOut";
 			setTimeout(() => {
 				snackbarContainer.remove();
 			}, 600);

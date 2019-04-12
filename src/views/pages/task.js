@@ -173,7 +173,7 @@ export default class Task extends Component {
 						<Report id={id} task={task} advanced={true} wrapper={<Card style="padding:0px;" />}/>
 							{
 								busy === false && fab &&
-								<div style="display:flex;flex-direction:row-reverse;">
+								<div className="sticky-bottom">
 									<div class="fab-cascade">
 										<span class="fab-action-button animated faster fadeIn">
 											<i class="fab-action-button__icon material-icons">&#xe8b8;</i>

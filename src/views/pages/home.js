@@ -145,7 +145,7 @@ export default class Home extends Component {
 			<div className="page page__home">
 				{ 
 					modalOpened === false && busy === false &&
-					<div style="display: flex;flex-direction:row-reverse;">
+					<div className="sticky-bottom">
 						<button class="fab animated faster fadeIn" onClick={() => this.setState({ modalOpened: true })}>
 							<i class="material-icons">&#xE145;</i>
 						</button>

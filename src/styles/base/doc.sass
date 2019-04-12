@@ -3,8 +3,6 @@
  */
 
 %fullscreen
-	width: 100vw
-	min-height: 100vh
 	overflow-x: hidden
 	-webkit-touch-callout: none
 	-webkit-user-select: none
@@ -12,6 +10,8 @@
 	-moz-user-select: none
 	-ms-user-select: none
 	user-select: none
+
+html
 
 body
 	color: $black
@@ -156,10 +156,16 @@ label
 	input[type=file]
 		display: none
 
+.sticky-bottom
+	z-index: 999
+	position: fixed
+	bottom: 10px
+	right: 10px
+	display: flex
+	flex-direction: row-reverse
+
 .fab
 	clear: all
-	position: fixed
-	top: 75vh
 	display: inline-block
 	outline: none
 	-webkit-user-select: none
@@ -207,9 +213,8 @@ label
 	100% { opacity: 0; transform: scale(1) }
 
 .fab-cascade
+	clear: all
 	z-index: 999
-	position: fixed
-	top: 85vh
 	width: 60px
 	display: inline-block
 

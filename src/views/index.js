@@ -28,9 +28,9 @@ export default (
 			}
 			redux.dispatch({ type: 'SET_ROUTE_URL', value: e.url }) 
 		}}>
-			<LiquidRoute animator={SlideLeft} path="/" component={Home} redux={redux}/>
-			<LiquidRoute animator={SlideLeft} path="/task/:id" component={Task} redux={redux}/>
-			<LiquidRoute animator={SlideLeft} component={Error404} redux={redux} default/>
+			<LiquidRoute key="home" animator={SlideLeft} path="/" component={Home} redux={redux}/>
+			<LiquidRoute key="task" animator={SlideLeft} path="/task/:id" component={Task} redux={redux}/>
+			<LiquidRoute key="error_404" animator={SlideLeft} component={Error404} redux={redux} default/>
 		</Router>
 	</Layout>
 );

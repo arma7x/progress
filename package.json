@@ -41,7 +41,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^2.30.1",
-    "node-sass": "^4.5.0",
+    "node-sass": "^4.13.1",
     "postcss-loader": "^2.0.6",
     "preact-async-route": "^2.2.1",
     "preact-transition-group": "^1.1.1",
